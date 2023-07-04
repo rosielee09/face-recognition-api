@@ -28,9 +28,6 @@ const db = knex({
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-});
 
 app.get('/', (req, res) => {
   res.send('it is working');
@@ -56,6 +53,6 @@ app.post('/imageurl', (req, res) => {
   image.handleApiCall(req, res);
 });
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 5432, () => {
   console.log(`app is running on port ${process.env.PORT}`);
 });
