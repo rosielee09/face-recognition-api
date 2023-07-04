@@ -10,13 +10,12 @@ const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
-
 const db = knex({
   client: 'pg',
   connection: {
-    connectionString : process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL,
     ssl: {
-      rejectUnauthorized: false
+      rejectUnauthorized: false,
     },
     host: process.env.DATABASE_HOST,
     port: 5432,
@@ -30,7 +29,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/', (req, res)=> { res.send('it is working') })
+app.get('/', (req, res) => {
+  res.send('it is working');
+});
 
 app.post('/signin', (req, res) => {
   signin.handleSignin(req, res, db, bcrypt);
@@ -52,8 +53,6 @@ app.post('/imageurl', (req, res) => {
   image.handleApiCall(req, res);
 });
 
-const PORT = process.env.PORT
-app.listen(PORT || 3000, () => {
-  console.log(`app is running on port ${PORT}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`app is running on port ${process.env.PORT}`);
 });
-
