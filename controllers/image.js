@@ -1,90 +1,47 @@
-const { ClarifaiStub, grpc } = require('clarifai-nodejs-grpc');
+const returnClarifaiRequestOptions = (imageUrl) => {
+  // Your PAT (Personal Access Token) can be found in the portal under Authentification
+  // const PAT = process.env.API_CLARIFAI;
+  const USER_ID = 'developingwithrosie';
+  const APP_ID = 'face-detection';
+  const IMAGE_URL = imageUrl;
 
-const stub = ClarifaiStub.grpc();
+  const raw = JSON.stringify({
+    user_app_id: {
+      user_id: USER_ID,
+      app_id: APP_ID,
+    },
+    inputs: [
+      {
+        data: {
+          image: {
+            url: IMAGE_URL,
+          },
+        },
+      },
+    ],
+  });
 
-// This will be used by every Clarifai endpoint call
-const metadata = new grpc.Metadata();
-metadata.set('authorization', 'Key ' + process.env.API_CLARIFAI);
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      Authorization: 'Key ' + PAT,
+    },
+    body: raw,
+  };
+  return requestOptions;
+};
 
 const handleApiCall = (req, res) => {
-  stub.PostModelOutputs(
-    {
-      user_app_id: {
-        user_id: 'developingwithrosie',
-        app_id: 'face-detection',
-      },
-      model_id: '6dc7e46bc9124c5c8824be4822abe105',
-
-      inputs: [
-        { data: { image: { url: req.body.input, allow_duplicate_url: true } } },
-      ],
-    },
-    metadata,
-    (err, response) => {
-      if (err) {
-        throw new Error(err);
-      }
-
-      if (response.status.code !== 10000) {
-        throw new Error(
-          'Post model outputs failed, status: ' + response.status.description
-        );
-      }
-
-      // Since we have one input, one output will exist here
-      const output = response.outputs[0];
-
-      console.log('Predicted concepts:');
-      for (const concept of output.data.concepts) {
-        console.log(concept.name + ' ' + concept.value);
-      }
-      res.json(response);
-    }
-  );
-
-  // const returnClarifaiRequestOptions = (imageUrl) => {
-  //   // Your PAT (Personal Access Token) can be found in the portal under Authentification
-  //   // const PAT = process.env.API_CLARIFAI;
-  //   const USER_ID = 'developingwithrosie';
-  //   const APP_ID = 'face-detection';
-  //   const IMAGE_URL = imageUrl;
-
-  //   const raw = JSON.stringify({
-  //     user_app_id: {
-  //       user_id: USER_ID,
-  //       app_id: APP_ID,
-  //     },
-  //     inputs: [
-  //       {
-  //         data: {
-  //           image: {
-  //             url: IMAGE_URL,
-  //           },
-  //         },
-  //       },
-  //     ],
-  //   });
-
-  //   const requestOptions = {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       Authorization: 'Key ' + PAT,
-  //     },
-  //     body: raw,
-  //   };
-  //   return requestOptions;
-  // };
-
-  // fetch(
-  //   `https://api.clarifai.com/v2/models/face-detection/versions/6dc7e46bc9124c5c8824be4822abe105/outputs`,
-  //   returnClarifaiRequestOptions(req.body.input)
-  // )
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     res.json(data);
-  //   })
-  //   .catch((err) => res.status(400).json('unable to work with API'));
+  fetch(
+    `https://api.clarifai.com/v2/models/face-detection/versions/6dc7e46bc9124c5c8824be4822abe105/outputs`,
+    returnClarifaiRequestOptions(req.body.input)
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => res.status(400).json('unable to work with API'));
 };
 
 const handleImage = (req, res, db) => {
