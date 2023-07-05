@@ -5,7 +5,6 @@ const saltRounds = 10;
 const cors = require('cors');
 const knex = require('knex');
 
-
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
@@ -28,7 +27,11 @@ const db = knex({
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: 'https://face-recognition-wizard.onrender.com',
+  })
+);
 
 app.get('/', (req, res) => {
   res.send('Success');
