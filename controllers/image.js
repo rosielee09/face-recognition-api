@@ -1,3 +1,5 @@
+const fetch = require('isomorphic-fetch');
+
 const returnClarifaiRequestOptions = (imageUrl) => {
   // Your PAT (Personal Access Token) can be found in the portal under Authentification
   const PAT = process.env.API_CLARIFAI;
