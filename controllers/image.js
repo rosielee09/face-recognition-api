@@ -1,5 +1,3 @@
-
-
 const returnClarifaiRequestOptions = (imageUrl) => {
   // Your PAT (Personal Access Token) can be found in the portal under Authentification
   const PAT = process.env.API_CLARIFAI;
@@ -36,14 +34,14 @@ const returnClarifaiRequestOptions = (imageUrl) => {
 
 const handleApiCall = (req, res) => {
   fetch(
-  `https://api.clarifai.com/v2/models/face-detection/versions/6dc7e46bc9124c5c8824be4822abe105/outputs`,
-  returnClarifaiRequestOptions(req.body.input)
-)
-  .then((response) => response.json())
-  .then((data) => {
-    res.json(data);
-  })
-  .catch((err) => res.status(400).json('unable to work with API'));
+    `https://api.clarifai.com/v2/models/face-detection/versions/6dc7e46bc9124c5c8824be4822abe105/outputs`,
+    returnClarifaiRequestOptions(req.body.input)
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => res.status(400).json('unable to work with API'));
 };
 
 const handleImage = (req, res, db) => {
