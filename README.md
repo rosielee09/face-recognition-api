@@ -1,2 +1,2 @@
 # face-recognition-api
-Back-end (server, database) for face-recognition app.
+Back-end (server, database) for face-detect-wizard app.
