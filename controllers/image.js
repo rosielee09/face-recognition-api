@@ -1,4 +1,4 @@
-import fetch from 'cross-fetch';
+const fetch = require('cross-fetch');
 
 const returnClarifaiRequestOptions = (imageUrl) => {
   // Your PAT (Personal Access Token) can be found in the portal under Authentification
