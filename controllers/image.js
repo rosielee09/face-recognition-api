@@ -1,3 +1,5 @@
+import fetch from 'cross-fetch';
+
 const returnClarifaiRequestOptions = (imageUrl) => {
   // Your PAT (Personal Access Token) can be found in the portal under Authentification
   const PAT = process.env.API_CLARIFAI;
@@ -42,7 +44,7 @@ const handleApiCall = (req, res) => {
       res.json(data);
     })
     .catch((err) => res.status(400).json('unable to work with API'));
-}; 
+};
 
 const handleImage = (req, res, db) => {
   const { id } = req.body;
